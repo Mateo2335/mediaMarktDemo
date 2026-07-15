@@ -122,7 +122,7 @@ export default function Header({
               </span>
               <button className="flex items-center gap-1 hover:text-mm-red text-sm font-bold text-gray-700 transition-colors">
                 <MapPin size={16} className="text-mm-red" />
-                <span>MediaMarkt Huesca</span>
+                <span>MediaMarkt DevOps</span>
                 <ChevronDown size={14} />
               </button>
             </div>
