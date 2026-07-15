@@ -56,6 +56,12 @@ jobs:
           flavor: |
             latest=true
 
+      # Get Git Short SHA
+      - name: Get short Git SHA
+        id: vars
+        run: |
+          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       # Build and push the Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -67,3 +73,31 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # GitOps deployment step
+      - name: Update GitOps Repository
+        if: github.event_name != 'pull_request'
+        env:
+          GITOPS_TOKEN: ${{ secrets.GITOPS_PAT }}
+          SHORT_SHA: ${{ env.SHORT_SHA }}
+        run: |
+          # Clone the GitOps repository
+          git clone https://${GITOPS_TOKEN}@github.com/Mateo2335/mediaMarktDemoGitOps.git GitOps
+          
+          # Use Node.js inline script to safely modify values.yaml across all environments
+          node -e '
+            const fs = require("fs");
+            let content = fs.readFileSync("GitOps/mediamarkt/values.yaml", "utf8");
+            content = content.replace(/(image:\s*\n(?:\s+.*\n)*\s+tag:\s*)(.*)/, `$1"sha-${process.env.SHORT_SHA}"`);
+            fs.writeFileSync("GitOps/mediamarkt/values.yaml", content, "utf8");
+            console.log("Successfully updated values.yaml tag to: sha-" + process.env.SHORT_SHA);
+          '
+          
+          # Commit and Push changes
+          cd GitOps
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mediamarkt/values.yaml
+          git commit -m "chore(GitOps): update mediamarkt image tag to sha-${SHORT_SHA} [skip ci]"
+          git push
+
