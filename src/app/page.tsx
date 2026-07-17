@@ -1,25 +1,35 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PromoSlider from "@/components/PromoSlider";
 import ProductCard from "@/components/ProductCard";
 import CartDrawer, { CartItem } from "@/components/CartDrawer";
-import { MOCK_PRODUCTS, Product, CATEGORIES } from "@/data/products";
+import { Product, CATEGORIES_ES, CATEGORIES_EN, MOCK_PRODUCTS_ES, MOCK_PRODUCTS_EN } from "@/data/products";
+import { TRANSLATIONS_ES, TRANSLATIONS_EN } from "@/data/translations";
 import { SlidersHorizontal, ArrowUpDown, Info } from "lucide-react";
 
 export default function Home() {
+  // Store / Language state
+  const [currentStore, setCurrentStore] = useState<"Barcelona" | "Oregon">("Barcelona");
+  const lang = currentStore === "Barcelona" ? "es" : "en";
+  const t = currentStore === "Barcelona" ? TRANSLATIONS_ES : TRANSLATIONS_EN;
+  const categories = currentStore === "Barcelona" ? CATEGORIES_ES : CATEGORIES_EN;
+  const products = currentStore === "Barcelona" ? MOCK_PRODUCTS_ES : MOCK_PRODUCTS_EN;
+
   // Cart state
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Filter/Sort state
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+  const selectedCategory = categories[selectedCategoryIndex] || categories[0];
+  
   const [maxPrice, setMaxPrice] = useState(1500);
   const [onlyFreeShipping, setOnlyFreeShipping] = useState(false);
-  const [sortBy, setSortBy] = useState("popularidad"); // popularidad, precio-asc, precio-desc, valoracion
+  const [sortBy, setSortBy] = useState("popularity"); // popularity, price-asc, price-desc, rating
 
   // Cart operations
   const handleAddToCart = (product: Product) => {
@@ -55,12 +65,14 @@ export default function Home() {
 
   // Filtered and Sorted products
   const filteredProducts = useMemo(() => {
-    let result = [...MOCK_PRODUCTS];
+    let result = [...products];
 
     // Category filter
-    if (selectedCategory !== "Todos") {
+    if (selectedCategoryIndex !== 0) {
+      // Compare by matching index or mapped category name
+      const categoryInProductLanguage = selectedCategory;
       result = result.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
+        (p) => p.category.toLowerCase() === categoryInProductLanguage.toLowerCase()
       );
     }
 
@@ -84,18 +96,18 @@ export default function Home() {
     }
 
     // Sorting
-    if (sortBy === "popularidad") {
+    if (sortBy === "popularity") {
       result.sort((a, b) => b.reviewsCount - a.reviewsCount);
-    } else if (sortBy === "precio-asc") {
+    } else if (sortBy === "price-asc") {
       result.sort((a, b) => a.price - b.price);
-    } else if (sortBy === "precio-desc") {
+    } else if (sortBy === "price-desc") {
       result.sort((a, b) => b.price - a.price);
-    } else if (sortBy === "valoracion") {
+    } else if (sortBy === "rating") {
       result.sort((a, b) => b.rating - a.rating);
     }
 
     return result;
-  }, [selectedCategory, searchQuery, maxPrice, onlyFreeShipping, sortBy]);
+  }, [products, selectedCategoryIndex, selectedCategory, searchQuery, maxPrice, onlyFreeShipping, sortBy]);
 
   const cartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -108,32 +120,37 @@ export default function Home() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        setSelectedCategory={(cat) => {
+          const idx = categories.indexOf(cat);
+          if (idx !== -1) setSelectedCategoryIndex(idx);
+        }}
+        currentStore={currentStore}
+        setCurrentStore={setCurrentStore}
       />
 
       {/* Main Layout */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
         
         {/* Banner Slider */}
-        <PromoSlider />
+        <PromoSlider currentStore={currentStore} />
 
         {/* Categories strip or badges for quick visualization */}
         <section className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 mm-shadow">
           <h3 className="font-extrabold text-sm uppercase text-gray-800 tracking-wider mb-4 border-l-2 border-mm-red pl-2">
-            Comprar por categoría
+            {t.shopByCategory}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat, index) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => setSelectedCategoryIndex(index)}
                 className={`py-3 px-4 rounded-xl border font-bold text-xs uppercase transition-all duration-200 active:scale-95 text-center flex flex-col items-center justify-center gap-1.5 ${
-                  selectedCategory === cat
+                  selectedCategoryIndex === index
                     ? "bg-mm-red border-mm-red text-white shadow-md shadow-red-600/10"
                     : "bg-gray-50/50 border-gray-200 hover:border-gray-300 text-gray-700 hover:bg-gray-50"
                 }`}
               >
-                <span>{cat === "Todos" ? "Ver Todo" : cat}</span>
+                <span>{index === 0 ? t.viewAll : cat}</span>
               </button>
             ))}
           </div>
@@ -147,42 +164,42 @@ export default function Home() {
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <h3 className="font-extrabold text-sm uppercase text-gray-800 tracking-wider flex items-center gap-2">
                 <SlidersHorizontal size={16} className="text-mm-red" />
-                Filtros
+                {t.filters}
               </h3>
-              {(selectedCategory !== "Todos" || searchQuery !== "" || maxPrice < 1500 || onlyFreeShipping) && (
+              {(selectedCategoryIndex !== 0 || searchQuery !== "" || maxPrice < 1500 || onlyFreeShipping) && (
                 <button
                   onClick={() => {
-                    setSelectedCategory("Todos");
+                    setSelectedCategoryIndex(0);
                     setSearchQuery("");
                     setMaxPrice(1500);
                     setOnlyFreeShipping(false);
                   }}
                   className="text-xs text-mm-red hover:underline font-bold"
                 >
-                  Limpiar todo
+                  {t.clearAll}
                 </button>
               )}
             </div>
 
             {/* Category selection in Sidebar */}
             <div className="space-y-2.5">
-              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Categoría</h4>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{t.categoryLabel}</h4>
               <div className="space-y-1.5">
-                {CATEGORIES.map((cat) => (
+                {categories.map((cat, index) => (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => setSelectedCategoryIndex(index)}
                     className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
-                      selectedCategory === cat
+                      selectedCategoryIndex === index
                         ? "bg-red-50 text-mm-red font-bold"
                         : "text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    <span>{cat === "Todos" ? "Todas las categorías" : cat}</span>
+                    <span>{index === 0 ? t.allCategories : cat}</span>
                     <span className="text-[10px] bg-gray-100 text-gray-400 font-bold px-1.5 py-0.5 rounded-full">
-                      {cat === "Todos"
-                        ? MOCK_PRODUCTS.length
-                        : MOCK_PRODUCTS.filter((p) => p.category === cat).length}
+                      {index === 0
+                        ? products.length
+                        : products.filter((p) => p.category === cat).length}
                     </span>
                   </button>
                 ))}
@@ -192,7 +209,7 @@ export default function Home() {
             {/* Price Filter slider */}
             <div className="space-y-3 pt-4 border-t border-gray-100">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Precio máximo</h4>
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{t.maxPrice}</h4>
                 <span className="text-xs font-black text-mm-red bg-red-50 px-2 py-0.5 rounded-sm">
                   {maxPrice} €
                 </span>
@@ -208,7 +225,7 @@ export default function Home() {
               />
               <div className="flex justify-between text-[10px] text-gray-400 font-bold">
                 <span>100 €</span>
-                <span>1.500 €</span>
+                <span>1,500 €</span>
               </div>
             </div>
 
@@ -222,7 +239,7 @@ export default function Home() {
                   className="rounded border-gray-300 text-mm-red focus:ring-mm-red h-4 w-4 accent-mm-red"
                 />
                 <span className="text-xs font-semibold text-gray-600 group-hover:text-gray-800 transition-colors">
-                  Solo Envío Gratis
+                  {t.freeShippingOnly}
                 </span>
               </label>
             </div>
@@ -235,26 +252,26 @@ export default function Home() {
             <div className="bg-white rounded-xl border border-gray-200/60 p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4 mm-shadow">
               <div className="text-center sm:text-left">
                 <h2 className="text-lg font-black text-gray-800">
-                  {selectedCategory === "Todos" ? "Todos los productos" : selectedCategory}
+                  {selectedCategoryIndex === 0 ? (currentStore === "Barcelona" ? "Todos los productos" : "All Products") : selectedCategory}
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Se han encontrado <span className="font-bold text-gray-700">{filteredProducts.length}</span> artículos
+                  {t.foundItems.replace("{count}", String(filteredProducts.length))}
                 </p>
               </div>
 
               {/* Sort selector */}
               <div className="flex items-center gap-2">
                 <ArrowUpDown size={14} className="text-gray-400" />
-                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Ordenar por:</span>
+                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">{t.sortByLabel}</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="text-xs font-bold text-gray-700 focus:outline-none border border-gray-200 bg-gray-50/50 hover:bg-gray-50 rounded-lg p-2 cursor-pointer focus:ring-1 focus:ring-mm-red"
                 >
-                  <option value="popularidad">Popularidad</option>
-                  <option value="precio-asc">Precio más bajo</option>
-                  <option value="precio-desc">Precio más alto</option>
-                  <option value="valoracion">Mejor valorados</option>
+                  <option value="popularity">{t.sortByPopularity}</option>
+                  <option value="price-asc">{t.sortByPriceAsc}</option>
+                  <option value="price-desc">{t.sortByPriceDesc}</option>
+                  <option value="rating">{t.sortByRating}</option>
                 </select>
               </div>
             </div>
@@ -266,21 +283,23 @@ export default function Home() {
                   <Info size={40} className="stroke-[1.5]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-700">No se encontraron productos</h3>
+                  <h3 className="font-bold text-gray-700">{t.noProductsFound}</h3>
                   <p className="text-xs text-gray-400 mt-1 leading-relaxed max-w-sm">
-                    Intenta cambiar la categoría, ajustar el rango de precios o buscar otro término.
+                    {currentStore === "Barcelona"
+                      ? "Pruebe a cambiar la categoría, ajustar el rango de precios o buscar otro término."
+                      : "Try changing the category, adjusting the price range, or searching for another term."}
                   </p>
                 </div>
                 <button
                   onClick={() => {
-                    setSelectedCategory("Todos");
+                    setSelectedCategoryIndex(0);
                     setSearchQuery("");
                     setMaxPrice(1500);
                     setOnlyFreeShipping(false);
                   }}
                   className="bg-mm-red hover:bg-mm-red-hover text-white text-xs font-bold py-2.5 px-6 rounded-full transition-colors active:scale-95"
                 >
-                  Restablecer filtros
+                  {t.resetFilters}
                 </button>
               </div>
             ) : (
@@ -290,6 +309,7 @@ export default function Home() {
                     key={product.id}
                     product={product}
                     onAddToCart={handleAddToCart}
+                    currentStore={currentStore}
                   />
                 ))}
               </div>
@@ -307,10 +327,11 @@ export default function Home() {
         cartItems={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
+        currentStore={currentStore}
       />
 
       {/* Footer */}
-      <Footer />
+      <Footer currentStore={currentStore} />
     </div>
   );
 }

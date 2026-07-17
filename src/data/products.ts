@@ -8,12 +8,12 @@ export interface Product {
   reviewsCount: number;
   image: string;
   isFreeShipping: boolean;
-  tag?: string; // e.g., "Novedad", "Más vendido", "Día sin IVA", "Oferta"
+  tag?: string;
   description: string;
   specs: string[];
 }
 
-export const CATEGORIES = [
+export const CATEGORIES_ES = [
   "Todos",
   "Smartphones",
   "Portátiles",
@@ -22,7 +22,19 @@ export const CATEGORIES = [
   "Hogar"
 ];
 
-export const MOCK_PRODUCTS: Product[] = [
+export const CATEGORIES_EN = [
+  "All",
+  "Smartphones",
+  "Laptops",
+  "TVs",
+  "Gaming",
+  "Home"
+];
+
+// For backward compatibility / default fallback
+export const CATEGORIES = CATEGORIES_ES;
+
+export const MOCK_PRODUCTS_ES: Product[] = [
   {
     id: "prod-1",
     name: "Apple iPhone 15 Pro, Titanio Natural, 256 GB, 5G",
@@ -54,7 +66,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: "prod-3",
     name: "Sony WH-1000XM5, Auriculares de Diadema Inalámbricos, ANC, Negro",
-    category: "Televisores", // In electronics stores, audio is often grouped with TV/Audio
+    category: "Televisores",
     price: 299,
     originalPrice: 379,
     rating: 4.9,
@@ -164,3 +176,149 @@ export const MOCK_PRODUCTS: Product[] = [
     specs: ["Procesador Intel Core i7-13700H", "16 GB de RAM DDR5", "Gráficos NVIDIA GeForce RTX 4060", "Pantalla de 16.1\" FHD a 144Hz"]
   }
 ];
+
+export const MOCK_PRODUCTS_EN: Product[] = [
+  {
+    id: "prod-1",
+    name: "Apple iPhone 15 Pro, Natural Titanium, 256 GB, 5G",
+    category: "Smartphones",
+    price: 1129,
+    originalPrice: 1249,
+    rating: 4.8,
+    reviewsCount: 312,
+    image: "/images/iphone15_pro.png",
+    isFreeShipping: true,
+    tag: "Best Seller",
+    description: "The first iPhone with an aerospace-grade titanium design, A17 Pro chip, and the most powerful camera system on an iPhone to date.",
+    specs: ["6.1\" Super Retina XDR display", "A17 Pro chip with 6-core GPU", "48 MP main camera", "USB-C connector"]
+  },
+  {
+    id: "prod-2",
+    name: "Apple MacBook Air 13, M3 Chip, 8GB RAM, 256GB SSD, Space Gray",
+    category: "Laptops",
+    price: 1199,
+    originalPrice: 1299,
+    rating: 4.7,
+    reviewsCount: 184,
+    image: "/images/macbook_air.png",
+    isFreeShipping: true,
+    tag: "VAT Free Day",
+    description: "The MacBook Air with M3 chip is ultraportable and superfast so you can work and play at your own pace anywhere.",
+    specs: ["Apple M3 chip with 8-core CPU", "8 GB unified memory", "256 GB SSD storage", "Up to 18 hours of battery life"]
+  },
+  {
+    id: "prod-3",
+    name: "Sony WH-1000XM5, Wireless Over-Ear Headphones, ANC, Black",
+    category: "TVs",
+    price: 299,
+    originalPrice: 379,
+    rating: 4.9,
+    reviewsCount: 520,
+    image: "/images/sony_headphones.png",
+    isFreeShipping: true,
+    tag: "Special Offer",
+    description: "Wireless headphones with industry-leading Noise Canceling, exceptional sound quality, and incomparably clear calls.",
+    specs: ["Noise Canceling with V1 processor", "Up to 30 hours of battery life", "Fast charge (3 min for 3h)", "Multipoint connectivity"]
+  },
+  {
+    id: "prod-4",
+    name: "LG OLED55C34LA Smart TV, 55\" OLED Evo, UHD 4K, Smart TV",
+    category: "TVs",
+    price: 1099,
+    originalPrice: 1499,
+    rating: 4.8,
+    reviewsCount: 198,
+    image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "-26% Discount",
+    description: "The only pure black that makes all other colors shine. The smart TV with the powerful 4K a9 Gen6 AI processor.",
+    specs: ["55-inch OLED Evo screen", "4K Ultra HD resolution", "a9 Gen6 Intelligent Processor", "Dolby Vision and Dolby Atmos"]
+  },
+  {
+    id: "prod-5",
+    name: "PlayStation 5 Slim Standard, Chassis D Edition, White/Black",
+    category: "Gaming",
+    price: 499,
+    originalPrice: 549,
+    rating: 4.9,
+    reviewsCount: 742,
+    image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "New",
+    description: "Experience superfast loading with a high-speed solid-state drive (SSD), deeper immersion with haptic feedback.",
+    specs: ["1 TB SSD storage", "4K graphics and up to 120 fps", "Tempest 3D Audio", "Ultra HD Blu-ray disc drive"]
+  },
+  {
+    id: "prod-6",
+    name: "Dyson V15 Detect Fluffy, Cordless Vacuum, 660W, Yellow/Nickel",
+    category: "Home",
+    price: 599,
+    originalPrice: 699,
+    rating: 4.6,
+    reviewsCount: 145,
+    image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "Top Quality",
+    description: "Dyson's most powerful and intelligent cordless vacuum, with illumination that reveals microscopic dust and a real-time LCD screen.",
+    specs: ["240 AW suction power", "Up to 60 minutes of run time", "Acoustic particle sensor", "Integrated LCD screen"]
+  },
+  {
+    id: "prod-7",
+    name: "Samsung Galaxy S24 Ultra, 512 GB, 12GB RAM, Titanium Yellow",
+    category: "Smartphones",
+    price: 1279,
+    originalPrice: 1459,
+    rating: 4.8,
+    reviewsCount: 94,
+    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "Galaxy AI",
+    description: "Welcome to the era of mobile AI. With the new Galaxy S24 Ultra, you can unleash your creativity and productivity.",
+    specs: ["6.8\" QHD+ Dynamic AMOLED 2X display", "200 MP main camera with Optical Zoom", "Snapdragon 8 Gen 3 processor for Galaxy", "Built-in S Pen"]
+  },
+  {
+    id: "prod-8",
+    name: "De'Longhi Magnifica Start Superautomatic Coffee Machine, ECAM220.22.GB",
+    category: "Home",
+    price: 349,
+    originalPrice: 399,
+    rating: 4.5,
+    reviewsCount: 215,
+    image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: false,
+    tag: "Offer",
+    description: "Insert freshly ground coffee beans to prepare your favorite drinks at the touch of a button. Includes manual milk frother.",
+    specs: ["15 bar pressure", "Intuitive touch control panel", "Integrated grinder with 13 settings", "Manual Cappuccino system"]
+  },
+  {
+    id: "prod-9",
+    name: "Nintendo Switch OLED Model Console, White",
+    category: "Gaming",
+    price: 319,
+    originalPrice: 349,
+    rating: 4.8,
+    reviewsCount: 421,
+    image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "Best Seller",
+    description: "Enjoy your favorite games wherever, whenever, and with whomever you want on the 7-inch OLED screen with intense colors and defined contrast.",
+    specs: ["7-inch OLED screen", "64 GB internal storage", "Wide adjustable stand", "Wired LAN port in the dock"]
+  },
+  {
+    id: "prod-10",
+    name: "HP Victus 16-r0012ns, Intel Core i7-13700H, 16GB RAM, 512GB SSD, RTX 4060",
+    category: "Laptops",
+    price: 949,
+    originalPrice: 1199,
+    rating: 4.4,
+    reviewsCount: 88,
+    image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80",
+    isFreeShipping: true,
+    tag: "Gamer Choice",
+    description: "The 16.1-inch HP Victus laptop is designed for peak gaming performance. Features a 13th generation Intel processor.",
+    specs: ["Intel Core i7-13700H processor", "16 GB DDR5 RAM", "NVIDIA GeForce RTX 4060 graphics", "16.1\" FHD 144Hz display"]
+  }
+];
+
+// Default export is ES for backward compatibility
+export const MOCK_PRODUCTS = MOCK_PRODUCTS_ES;

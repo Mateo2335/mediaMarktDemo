@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from "lucide-react";
 import { Product } from "@/data/products";
+import { TRANSLATIONS_ES, TRANSLATIONS_EN } from "@/data/translations";
 
 export interface CartItem {
   product: Product;
@@ -16,6 +17,7 @@ interface CartDrawerProps {
   cartItems: CartItem[];
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
+  currentStore?: "Barcelona" | "Oregon";
 }
 
 export default function CartDrawer({
@@ -24,7 +26,9 @@ export default function CartDrawer({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
+  currentStore = "Barcelona",
 }: CartDrawerProps) {
+  const t = currentStore === "Barcelona" ? TRANSLATIONS_ES : TRANSLATIONS_EN;
   
   // Disable body scroll when drawer is open
   useEffect(() => {
@@ -71,7 +75,7 @@ export default function CartDrawer({
           <div className="flex items-center gap-2">
             <ShoppingBag size={20} className="text-mm-red" />
             <h2 className="text-base font-black uppercase text-gray-800">
-              Tu Carrito ({itemsCount})
+              {t.myCartTitle} ({itemsCount})
             </h2>
           </div>
           <button
@@ -87,12 +91,12 @@ export default function CartDrawer({
           <div className="bg-red-50 py-3 px-4 border-b border-red-100/50">
             {isFreeShipping ? (
               <p className="text-xs text-green-700 font-bold flex items-center gap-1.5">
-                🎉 ¡Enhorabuena! Tienes envío a domicilio GRATUITO.
+                {t.congratsFreeShipping}
               </p>
             ) : (
               <div className="space-y-1.5">
                 <p className="text-xs text-gray-600 font-medium">
-                  Añade <span className="font-bold text-mm-red">{amountToFreeShipping.toFixed(2)} €</span> más para conseguir envío gratis.
+                  {t.shippingSpendMore.replace("{amount}", amountToFreeShipping.toFixed(2))}
                 </p>
                 {/* Progress bar */}
                 <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
@@ -114,16 +118,18 @@ export default function CartDrawer({
                 <ShoppingBag size={48} className="stroke-[1.5]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-700">Tu carrito está vacío</h3>
+                <h3 className="font-bold text-gray-700">{t.emptyCart}</h3>
                 <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                  ¿Aún no has decidido qué comprar? Explora nuestras ofertas y encuentra la mejor tecnología.
+                  {currentStore === "Barcelona"
+                    ? "¿Aún no has decidido qué comprar? Explora nuestras ofertas y encuentra la mejor tecnología."
+                    : "Haven't decided what to buy yet? Explore our deals and find the best technology."}
                 </p>
               </div>
               <button
                 onClick={onClose}
                 className="bg-mm-red hover:bg-mm-red-hover text-white text-xs font-bold py-2.5 px-6 rounded-full transition-colors"
               >
-                Volver a la tienda
+                {currentStore === "Barcelona" ? "Volver a la tienda" : "Return to store"}
               </button>
             </div>
           ) : (
@@ -185,14 +191,14 @@ export default function CartDrawer({
                         </span>
                         {item.quantity > 1 && (
                           <span className="text-[10px] text-gray-400 font-medium">
-                            ({item.product.price} €/ud)
+                            ({item.product.price} €/unit)
                           </span>
                         )}
                       </div>
                       <button
                         onClick={() => onRemoveItem(item.product.id)}
                         className="p-1.5 rounded-md text-gray-400 hover:text-mm-red hover:bg-red-50 transition-colors"
-                        title="Eliminar producto"
+                        title="Remove product"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -212,31 +218,33 @@ export default function CartDrawer({
             {/* Calculation summary */}
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-gray-500">
-                <span>Subtotal</span>
+                <span>{t.subtotal}</span>
                 <span>{subtotal.toLocaleString("es-ES")} €</span>
               </div>
               <div className="flex justify-between text-gray-500">
-                <span>Gastos de envío</span>
-                <span>{isFreeShipping ? "Gratis" : `${shippingCost.toFixed(2)} €`}</span>
+                <span>{t.shippingCostLabel}</span>
+                <span>{isFreeShipping ? (currentStore === "Barcelona" ? "Gratis" : "Free") : `${shippingCost.toFixed(2)} €`}</span>
               </div>
               <div className="flex justify-between text-base font-black text-gray-800 pt-2 border-t border-gray-200/80">
-                <span>Total estimado</span>
+                <span>{t.total}</span>
                 <span className="text-mm-red">{total.toLocaleString("es-ES")} €</span>
               </div>
             </div>
 
             {/* CTA Checkout button */}
             <button
-              onClick={() => alert("¡Pedido simulado con éxito! Gracias por probar la demo.")}
+              onClick={() => alert(t.simulateAlertSuccess)}
               className="w-full bg-mm-red hover:bg-mm-red-hover text-white py-3 rounded-full font-bold text-sm transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 group"
             >
-              <span>Tramitar pedido</span>
+              <span>{t.secureCheckout}</span>
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </button>
 
             {/* Payment security info */}
             <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-              Pago 100% seguro. Financiación disponible en el siguiente paso.
+              {currentStore === "Barcelona"
+                ? "Pago 100% seguro. Financiación disponible en el siguiente paso."
+                : "100% secure payment. Financing available in the next step."}
             </p>
           </div>
         )}

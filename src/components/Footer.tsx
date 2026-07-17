@@ -1,7 +1,14 @@
 import React from "react";
 import { Send, ShieldCheck, Truck, RefreshCw, CreditCard } from "lucide-react";
+import { TRANSLATIONS_ES, TRANSLATIONS_EN } from "@/data/translations";
 
-export default function Footer() {
+interface FooterProps {
+  currentStore?: "Barcelona" | "Oregon";
+}
+
+export default function Footer({ currentStore = "Barcelona" }: FooterProps) {
+  const t = currentStore === "Barcelona" ? TRANSLATIONS_ES : TRANSLATIONS_EN;
+
   return (
     <footer className="w-full bg-mm-dark text-gray-300 text-sm mt-auto">
       
@@ -13,8 +20,8 @@ export default function Footer() {
               <Truck size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm">Envío rápido a domicilio</h4>
-              <p className="text-xs text-gray-400">Gratis a partir de 49€ en miles de artículos</p>
+              <h4 className="font-bold text-white text-sm">{t.footerFreeShipping}</h4>
+              <p className="text-xs text-gray-400">{t.footerFreeShippingSub}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -22,8 +29,8 @@ export default function Footer() {
               <RefreshCw size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm">Devoluciones fáciles</h4>
-              <p className="text-xs text-gray-400">Hasta 30 días para devolver tu compra</p>
+              <h4 className="font-bold text-white text-sm">{t.footerEasyReturns}</h4>
+              <p className="text-xs text-gray-400">{t.footerEasyReturnsSub}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -31,8 +38,8 @@ export default function Footer() {
               <ShieldCheck size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm">Compra 100% Segura</h4>
-              <p className="text-xs text-gray-400">Garantía oficial y métodos de pago protegidos</p>
+              <h4 className="font-bold text-white text-sm">{t.footerSecureShopping}</h4>
+              <p className="text-xs text-gray-400">{t.footerSecureShoppingSub}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -40,8 +47,8 @@ export default function Footer() {
               <CreditCard size={24} />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm">Financiación flexible</h4>
-              <p className="text-xs text-gray-400">Paga a plazos cómodamente tus compras</p>
+              <h4 className="font-bold text-white text-sm">{t.footerFlexibleFinancing}</h4>
+              <p className="text-xs text-gray-400">{t.footerFlexibleFinancingSub}</p>
             </div>
           </div>
         </div>
@@ -50,63 +57,102 @@ export default function Footer() {
       {/* Main Links Area */}
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
-        {/* Column 1: Atención al Cliente */}
+        {/* Column 1: Customer Service */}
         <div>
           <h3 className="text-white font-bold mb-4 text-xs uppercase tracking-wider border-l-2 border-mm-red pl-2">
-            Atención al Cliente
+            {t.footerCustomerService}
           </h3>
           <ul className="space-y-2.5 text-xs text-gray-400">
-            <li><a href="#" className="hover:text-white transition-colors">Contacto y Ayuda</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Estado de mi Pedido</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Devoluciones y Cambios</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Nuestras Tiendas</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Cita Previa en Tienda</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+            {currentStore === "Barcelona" ? (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Contacto y Ayuda</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Estado de mi Pedido</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Devoluciones y Cambios</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Nuestras Tiendas</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Cita Previa en Tienda</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+              </>
+            ) : (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Contact & Help</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Order Status</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Returns & Exchanges</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Our Stores</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Store Appointment</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+              </>
+            )}
           </ul>
         </div>
 
-        {/* Column 2: Comprar en MediaMarkt */}
+        {/* Column 2: Shop at MediaMarkt */}
         <div>
           <h3 className="text-white font-bold mb-4 text-xs uppercase tracking-wider border-l-2 border-mm-red pl-2">
-            Comprar en MediaMarkt
+            {t.footerShopMediaMarkt}
           </h3>
           <ul className="space-y-2.5 text-xs text-gray-400">
-            <li><a href="#" className="hover:text-white transition-colors">Financiación y Pagos</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Garantías y Extensiones</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Servicios e Instalaciones</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Tarjeta Regalo MediaMarkt</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Empresas</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Vender en nuestro Marketplace</a></li>
+            {currentStore === "Barcelona" ? (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Financiación y Pagos</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Garantías y Extensiones</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Servicios e Instalaciones</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Tarjeta Regalo MediaMarkt</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Empresas</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Vender en nuestro Marketplace</a></li>
+              </>
+            ) : (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Financing & Payments</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Warranties & Extensions</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Services & Installations</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Gift Card</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">MediaMarkt for Business</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Sell on our Marketplace</a></li>
+              </>
+            )}
           </ul>
         </div>
 
-        {/* Column 3: Sobre Nosotros */}
+        {/* Column 3: About Us */}
         <div>
           <h3 className="text-white font-bold mb-4 text-xs uppercase tracking-wider border-l-2 border-mm-red pl-2">
-            Sobre Nosotros
+            {t.footerAboutUs}
           </h3>
           <ul className="space-y-2.5 text-xs text-gray-400">
-            <li><a href="#" className="hover:text-white transition-colors">Quiénes somos</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Trabaja con nosotros</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Sostenibilidad y Medio Ambiente</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Sala de prensa</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Club</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Afiliados</a></li>
+            {currentStore === "Barcelona" ? (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Quiénes somos</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Trabaja con nosotros</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Sostenibilidad y Medio Ambiente</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Sala de prensa</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Club</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Afiliados</a></li>
+              </>
+            ) : (
+              <>
+                <li><a href="#" className="hover:text-white transition-colors">Who we are</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Sustainability & Environment</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Press Room</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">MediaMarkt Club</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Affiliates</a></li>
+              </>
+            )}
           </ul>
         </div>
 
         {/* Column 4: Newsletter */}
         <div>
           <h3 className="text-white font-bold mb-4 text-xs uppercase tracking-wider border-l-2 border-mm-red pl-2">
-            Únete a la Newsletter
+            {t.footerJoinNewsletter}
           </h3>
           <p className="text-xs text-gray-400 mb-4 leading-relaxed">
-            Apúntate y recibe ofertas exclusivas, novedades y 10€ de descuento para tu primera compra online.
+            {t.footerNewsletterSub}
           </p>
           <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
             <input
               type="email"
-              placeholder="Tu dirección de correo"
+              placeholder={t.footerEmailPlaceholder}
               className="bg-gray-800 border border-gray-700 text-white placeholder-gray-500 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-mm-red text-xs flex-1"
             />
             <button
@@ -154,15 +200,15 @@ export default function Footer() {
       <div className="w-full bg-[#0a0a0a] py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-800 text-xs text-gray-500">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
-            <a href="#" className="hover:text-gray-400">Aviso Legal</a>
-            <a href="#" className="hover:text-gray-400">Política de Privacidad</a>
-            <a href="#" className="hover:text-gray-400">Política de Cookies</a>
-            <a href="#" className="hover:text-gray-400">Condiciones de Contratación</a>
-            <a href="#" className="hover:text-gray-400">Configuración de Cookies</a>
+            <a href="#" className="hover:text-gray-400">{t.footerLegalNotice}</a>
+            <a href="#" className="hover:text-gray-400">{t.footerPrivacyPolicy}</a>
+            <a href="#" className="hover:text-gray-400">{t.footerCookiePolicy}</a>
+            <a href="#" className="hover:text-gray-400">{t.footerTermsConditions}</a>
+            <a href="#" className="hover:text-gray-400">{t.footerCookieSettings}</a>
           </div>
 
           <div className="flex items-center gap-4 text-gray-600">
-            <span>© MediaMarkt Saturn Administradora de Tiendas, S.L.U. 2026. Todos los derechos reservados.</span>
+            <span>{t.footerCopyright}</span>
           </div>
         </div>
       </div>

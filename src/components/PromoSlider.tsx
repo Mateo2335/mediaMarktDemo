@@ -14,7 +14,7 @@ interface Slide {
   ctaText: string;
 }
 
-const SLIDES: Slide[] = [
+const SLIDES_ES: Slide[] = [
   {
     id: 1,
     title: "⚡ Gemini CLI Hackea los Precios ⚡",
@@ -26,12 +26,12 @@ const SLIDES: Slide[] = [
   },
   {
     id: 2,
-    title: "Gaming Days",
-    subtitle: "Equípate con lo último en consolas PlayStation 5, Nintendo Switch, portátiles gaming y accesorios profesionales.",
-    badge: "Ofertas Gamer",
+    title: "Semanas de la Tecnología",
+    subtitle: "Ahorra al máximo en smartphones, portátiles y televisores de última generación con envío gratis.",
+    badge: "Día Sin IVA",
     image: "https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?auto=format&fit=crop&w=1200&q=80",
-    accentColor: "from-[#0f172a] via-[#1e1b4b] to-black",
-    ctaText: "Entrar a la Zona Gaming"
+    accentColor: "from-mm-red via-red-800 to-black",
+    ctaText: "Ver ofertas"
   },
   {
     id: 3,
@@ -44,16 +44,52 @@ const SLIDES: Slide[] = [
   }
 ];
 
-export default function PromoSlider() {
+const SLIDES_EN: Slide[] = [
+  {
+    id: 1,
+    title: "⚡ Gemini CLI Price Hack ⚡",
+    subtitle: "The Artificial Intelligence agent has taken control and slashed your favorite products in half. For fast programmers only!",
+    badge: "EXCLUSIVE AI OFFER",
+    image: "/images/mediamarkt_hero_banner.png",
+    accentColor: "from-mm-red via-purple-900 to-mm-dark",
+    ctaText: "SHOP AT 50% OFF!"
+  },
+  {
+    id: 2,
+    title: "Gaming Days",
+    subtitle: "Equip yourself with the latest in PlayStation 5, Nintendo Switch, gaming laptops, and professional accessories.",
+    badge: "Gamer Deals",
+    image: "https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?auto=format&fit=crop&w=1200&q=80",
+    accentColor: "from-[#0f172a] via-[#1e1b4b] to-black",
+    ctaText: "Enter the Gaming Zone"
+  },
+  {
+    id: 3,
+    title: "Renew Your Home",
+    subtitle: "Achieve maximum efficiency with the best superautomatic coffee machines, Dyson vacuums, and home appliances.",
+    badge: "Home Efficiency",
+    image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=1200&q=80",
+    accentColor: "from-[#1e293b] via-[#334155] to-black",
+    ctaText: "Explore Home Deals"
+  }
+];
+
+interface PromoSliderProps {
+  currentStore: "Barcelona" | "Oregon";
+}
+
+export default function PromoSlider({ currentStore }: PromoSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  const slides = currentStore === "Barcelona" ? SLIDES_ES : SLIDES_EN;
+
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
-  }, []);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   useEffect(() => {
@@ -73,7 +109,7 @@ export default function PromoSlider() {
         className="w-full h-full flex transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {SLIDES.map((slide) => (
+        {slides.map((slide) => (
           <div
             key={slide.id}
             className="w-full h-full flex-shrink-0 relative overflow-hidden flex items-center justify-between"
@@ -132,7 +168,7 @@ export default function PromoSlider() {
 
       {/* Dots Indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2.5">
-        {SLIDES.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}

@@ -4,13 +4,16 @@ import React from "react";
 import Image from "next/image";
 import { Star, StarHalf, ShoppingCart, CheckCircle } from "lucide-react";
 import { Product } from "@/data/products";
+import { TRANSLATIONS_ES, TRANSLATIONS_EN } from "@/data/translations";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
+  currentStore?: "Barcelona" | "Oregon";
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ product, onAddToCart, currentStore = "Barcelona" }: ProductCardProps) {
+  const t = currentStore === "Barcelona" ? TRANSLATIONS_ES : TRANSLATIONS_EN;
   const {
     name,
     price,
@@ -120,11 +123,11 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
             {isFreeShipping ? (
               <span className="text-[10px] bg-green-50 text-green-700 font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
                 <CheckCircle size={10} className="fill-green-700 text-white" />
-                Envío GRATIS
+                {t.freeShippingBadge}
               </span>
             ) : (
               <span className="text-[10px] text-gray-400 font-medium">
-                Envío: 3,99€
+                {t.shippingCost}
               </span>
             )}
           </div>
@@ -150,7 +153,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
             <button
               onClick={() => onAddToCart(product)}
               className="bg-mm-red hover:bg-mm-red-hover text-white p-2.5 rounded-xl transition-all duration-200 active:scale-90 shadow-sm hover:shadow group/btn"
-              title="Añadir al carrito"
+              title={t.addToCart}
             >
               <ShoppingCart size={18} className="transition-transform duration-300 group-hover/btn:scale-110" />
             </button>
