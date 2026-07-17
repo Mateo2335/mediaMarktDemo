@@ -35,30 +35,22 @@ export default function Header({
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-40">
       {/* Top Banner Offer */}
-      <div className="w-full bg-mm-dark text-white text-xs py-2 px-4 flex justify-between items-center overflow-x-auto whitespace-nowrap">
-        <div className="flex gap-6 mx-auto md:mx-0">
-          <span className="flex items-center gap-1.5 text-gray-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-mm-red animate-pulse" />
-            Envío gratis en miles de productos a partir de 49€
+      <div className="w-full bg-mm-yellow text-mm-dark text-sm py-2.5 px-4 font-black flex flex-col md:flex-row justify-between items-center gap-2 shadow-md border-b-2 border-mm-red">
+        <div className="flex items-center gap-2">
+          <span className="bg-mm-red text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-black animate-pulse">
+            ★ DÍA LOCO GEMINI ★
           </span>
-          <span className="hidden md:flex items-center gap-1.5 text-gray-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-mm-red" />
-            Financiación a tu medida hasta 36 meses
-          </span>
-          <span className="hidden lg:flex items-center gap-1.5 text-gray-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-mm-red" />
-            Recogida en tienda gratuita en 30 minutos
+          <span className="text-mm-red font-black text-xs sm:text-sm uppercase tracking-wide">
+            ¡DESCUENTO ESPECIAL DEL 50% EN TU PRÓXIMA COMPRA!
           </span>
         </div>
-        <div className="hidden sm:flex items-center gap-4 text-gray-300">
-          <a href="#" className="hover:text-white flex items-center gap-1">
-            <PhoneCall size={12} />
-            900 205 000
-          </a>
-          <a href="#" className="hover:text-white flex items-center gap-1">
-            <HelpCircle size={12} />
-            Ayuda
-          </a>
+        <div className="flex items-center gap-3 text-xs">
+          <span className="font-bold text-gray-800">
+            Usa el código: <span className="bg-mm-dark text-mm-yellow font-mono px-2 py-1 rounded-md font-black select-all">GEMINIMARKTI</span>
+          </span>
+          <span className="bg-white/80 border border-mm-red/30 text-mm-red font-bold px-2 py-0.5 rounded-full text-[10px] animate-bounce">
+            ¡Solo hoy!
+          </span>
         </div>
       </div>
 

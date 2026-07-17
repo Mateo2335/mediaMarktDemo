@@ -17,12 +17,12 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 1,
-    title: "Semanas de la Tecnología",
-    subtitle: "Ahorra al máximo en smartphones, portátiles y televisores de última generación con envío gratis.",
-    badge: "Día Sin IVA",
+    title: "⚡ Gemini CLI Hackea los Precios ⚡",
+    subtitle: "El agente de Inteligencia Artificial ha tomado el control y ha rebajado a la mitad tus productos favoritos. ¡Solo para programadores rápidos!",
+    badge: "OFERTA IA EXCLUSIVA",
     image: "/images/mediamarkt_hero_banner.png",
-    accentColor: "from-mm-red via-red-800 to-black",
-    ctaText: "Ver ofertas"
+    accentColor: "from-mm-red via-purple-900 to-mm-dark",
+    ctaText: "¡COMPRAR AL 50%!"
   },
   {
     id: 2,
