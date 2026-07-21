@@ -160,7 +160,7 @@ export default function Header({
                         : "text-gray-700"
                     }`}
                   >
-                    <span>MediaMarkt Madrid</span>
+                    <span>MediaMarkt Barcelona</span>
                     <span className="text-[9px] bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded-full uppercase">
                       ES
                     </span>
