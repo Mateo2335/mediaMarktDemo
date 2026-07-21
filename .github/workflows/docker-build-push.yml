@@ -2,10 +2,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ "main", "master" ]
-    tags: [ "v*.*.*" ]
+    branches: ["main", "master"]
+    tags: ["v*.*.*"]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
 
 env:
   REGISTRY: ghcr.io
@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: [self-hosted, macOS, x64]
+    runs-on: [self-hosted, Linux, x64]
     permissions:
       contents: read
       packages: write
@@ -83,7 +83,7 @@ jobs:
         run: |
           # Clone the GitOps repository
           git clone https://${GITOPS_TOKEN}@github.com/Mateo2335/mediaMarktDemoGitOps.git GitOps
-          
+
           # Use Node.js inline script to safely modify values.yaml across all environments
           node -e '
             const fs = require("fs");
@@ -92,7 +92,7 @@ jobs:
             fs.writeFileSync("GitOps/mediamarkt/values.yaml", content, "utf8");
             console.log("Successfully updated values.yaml tag to: sha-" + process.env.SHORT_SHA);
           '
-          
+
           # Commit and Push changes
           cd GitOps
           git config user.name "github-actions[bot]"
@@ -100,4 +100,3 @@ jobs:
           git add mediamarkt/values.yaml
           git commit -m "chore(GitOps): update mediamarkt image tag to sha-${SHORT_SHA} [skip ci]"
           git push
-
