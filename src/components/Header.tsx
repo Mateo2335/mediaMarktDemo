@@ -37,7 +37,8 @@ export default function Header({
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
 
   const t = currentStore === "Barcelona" ? TRANSLATIONS_ES : TRANSLATIONS_EN;
-  const categories = currentStore === "Barcelona" ? CATEGORIES_ES : CATEGORIES_EN;
+  const categories =
+    currentStore === "Barcelona" ? CATEGORIES_ES : CATEGORIES_EN;
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-40">
@@ -45,15 +46,22 @@ export default function Header({
       <div className="w-full bg-mm-yellow text-mm-dark text-sm py-2.5 px-4 font-black flex flex-col md:flex-row justify-between items-center gap-2 shadow-md border-b-2 border-mm-red">
         <div className="flex items-center gap-2">
           <span className="bg-mm-red text-white text-xs px-2.5 py-1 rounded-md uppercase tracking-widest font-black animate-pulse">
-            {currentStore === "Barcelona" ? "★ DÍA LOCO GEMINI ★" : "★ GEMINI CRAZY DAY ★"}
+            {currentStore === "Barcelona"
+              ? "★ DÍA LOCO GEMINI ★"
+              : "★ GEMINI CRAZY DAY ★"}
           </span>
           <span className="text-mm-red font-black text-xs sm:text-sm uppercase tracking-wide">
-            {currentStore === "Barcelona" ? "¡DESCUENTO ESPECIAL DEL 50% EN TU PRÓXIMA COMPRA!" : "SPECIAL 50% DISCOUNT ON YOUR NEXT PURCHASE!"}
+            {currentStore === "Barcelona"
+              ? "¡DESCUENTO ESPECIAL DEL 50% EN TU PRÓXIMA COMPRA!"
+              : "SPECIAL 50% DISCOUNT ON YOUR NEXT PURCHASE!"}
           </span>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="font-bold text-gray-800">
-            {currentStore === "Barcelona" ? "Usa el código: " : "Use code: "}<span className="bg-mm-dark text-mm-yellow font-mono px-2 py-1 rounded-md font-black select-all">GEMINIMARKTI</span>
+            {currentStore === "Barcelona" ? "Usa el código: " : "Use code: "}
+            <span className="bg-mm-dark text-mm-yellow font-mono px-2 py-1 rounded-md font-black select-all">
+              GEMINIMARKTI
+            </span>
           </span>
           <span className="bg-white/80 border border-mm-red/30 text-mm-red font-bold px-2 py-0.5 rounded-full text-[10px] animate-bounce">
             {currentStore === "Barcelona" ? "¡Solo hoy!" : "Today only!"}
@@ -125,7 +133,10 @@ export default function Header({
               >
                 <MapPin size={16} className="text-mm-red" />
                 <span>MediaMarkt {currentStore}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isStoreDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${isStoreDropdownOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               {/* Store Dropdown menu */}
@@ -133,7 +144,9 @@ export default function Header({
                 <div className="absolute top-[45px] left-0 bg-white border border-gray-200 rounded-xl shadow-xl py-2 w-56 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-3 py-1.5 border-b border-gray-100 mb-1">
                     <span className="text-[10px] font-black uppercase text-gray-400 tracking-wider">
-                      {currentStore === "Barcelona" ? "Selecciona tu tienda" : "Select your store"}
+                      {currentStore === "Barcelona"
+                        ? "Selecciona tu tienda"
+                        : "Select your store"}
                     </span>
                   </div>
                   <button
@@ -142,11 +155,15 @@ export default function Header({
                       setIsStoreDropdownOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-gray-50 flex items-center justify-between ${
-                      currentStore === "Barcelona" ? "text-mm-red bg-red-50/40" : "text-gray-700"
+                      currentStore === "Barcelona"
+                        ? "text-mm-red bg-red-50/40"
+                        : "text-gray-700"
                     }`}
                   >
-                    <span>MediaMarkt Barcelona</span>
-                    <span className="text-[9px] bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded-full uppercase">ES</span>
+                    <span>MediaMarkt Madrid</span>
+                    <span className="text-[9px] bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded-full uppercase">
+                      ES
+                    </span>
                   </button>
                   <button
                     onClick={() => {
@@ -154,11 +171,15 @@ export default function Header({
                       setIsStoreDropdownOpen(false);
                     }}
                     className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-gray-50 flex items-center justify-between ${
-                      currentStore === "Oregon" ? "text-mm-red bg-red-50/40" : "text-gray-700"
+                      currentStore === "Oregon"
+                        ? "text-mm-red bg-red-50/40"
+                        : "text-gray-700"
                     }`}
                   >
                     <span>MediaMarkt Oregon</span>
-                    <span className="text-[9px] bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded-full uppercase">EN</span>
+                    <span className="text-[9px] bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded-full uppercase">
+                      EN
+                    </span>
                   </button>
                 </div>
               )}
@@ -246,9 +267,7 @@ export default function Header({
                         : "text-gray-700"
                     }`}
                   >
-                    <span>
-                      {cat === categories[0] ? t.allCategories : cat}
-                    </span>
+                    <span>{cat === categories[0] ? t.allCategories : cat}</span>
                     {selectedCategory === cat && (
                       <span className="h-1.5 w-1.5 rounded-full bg-mm-red" />
                     )}
@@ -260,19 +279,21 @@ export default function Header({
 
           {/* Quick Category Links */}
           <div className="hidden md:flex items-center gap-6 overflow-x-auto no-scrollbar">
-            {categories.filter((c) => c !== categories[0]).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`py-1.5 border-b-2 hover:text-mm-red transition-all ${
-                  selectedCategory === cat
-                    ? "border-mm-red text-mm-red font-bold"
-                    : "border-transparent text-gray-500"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            {categories
+              .filter((c) => c !== categories[0])
+              .map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`py-1.5 border-b-2 hover:text-mm-red transition-all ${
+                    selectedCategory === cat
+                      ? "border-mm-red text-mm-red font-bold"
+                      : "border-transparent text-gray-500"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
           </div>
 
           {/* Campaign badging */}
